@@ -3,12 +3,30 @@ export type Json =
   | number
   | boolean
   | null
-  | { [key: string]: Json }
+  | { [key: string]: Json | undefined }
   | Json[]
 
 export interface Database {
   public: {
     Tables: {
+      companies: {
+        Row: {
+          created_at: string | null
+          id: number
+          name: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: number
+          name?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          name?: string | null
+        }
+        Relationships: []
+      }
       customers: {
         Row: {
           id: string
@@ -178,25 +196,40 @@ export interface Database {
         Row: {
           avatar_url: string | null
           billing_address: Json | null
+          company_id: number | null
+          email_contact: string | null
           full_name: string | null
           id: string
           payment_method: Json | null
+          phone_contact: string | null
         }
         Insert: {
           avatar_url?: string | null
           billing_address?: Json | null
+          company_id?: number | null
+          email_contact?: string | null
           full_name?: string | null
           id: string
           payment_method?: Json | null
+          phone_contact?: string | null
         }
         Update: {
           avatar_url?: string | null
           billing_address?: Json | null
+          company_id?: number | null
+          email_contact?: string | null
           full_name?: string | null
           id?: string
           payment_method?: Json | null
+          phone_contact?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "users_company_id_fkey"
+            columns: ["company_id"]
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "users_id_fkey"
             columns: ["id"]
@@ -223,11 +256,9 @@ export interface Database {
         | "incomplete_expired"
         | "past_due"
         | "unpaid"
-        | "paused"
     }
     CompositeTypes: {
       [_ in never]: never
     }
   }
 }
-

@@ -5,12 +5,12 @@ import { PropsWithChildren } from 'react';
 import 'styles/main.css';
 
 const meta = {
-  title: 'Next.js Subscription Starter',
-  description: 'Brought to you by Vercel, Stripe, and Supabase.',
+  title: 'ReelEffect',
+  description: 'ReelEffect',
   cardImage: '/og.png',
   robots: 'follow, index',
   favicon: '/favicon.ico',
-  url: 'https://subscription-starter.vercel.app',
+  url: '',
   type: 'website'
 };
 
@@ -46,7 +46,7 @@ export default function RootLayout({
 }: PropsWithChildren) {
   return (
     <html lang="en">
-      <body className="bg-black loading">
+      <body className="bg-white loading">
         <SupabaseProvider>
           {/* @ts-expect-error */}
           <Navbar />
