@@ -1,5 +1,10 @@
 'use client';
 
+import {
+  getAccount,
+  putAccount,
+  putAccountParam
+} from '@/supabase-api/accounts';
 import { getCompanies } from '@/supabase-api/companies';
 import { getUser, putUser, putUserParam } from '@/supabase-api/users';
 import React, { useEffect, useState } from 'react';
@@ -17,35 +22,45 @@ const ProfileForm = ({ user }: any) => {
     formState: { errors }
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const payLoad: putUserParam = {
-      full_name: data.fullname,
-      company_id: data.companyId
+    const payLoad: putAccountParam = {
+      company_id: data.companyId,
+      user_id: user.id
     };
-    const result = await putUser(user.id, payLoad);
-    if (!result?.error) {
-    }
-    console.log(result);
+    await putAccount(user.id, payLoad);
+    const userParams: putUserParam = { full_name: data.fullname };
+    await putUser(user.id, userParams);
   };
 
   //console.log(watch("example")) // watch input value by passing the name of it
 
   const [companies, setCompanies] = useState<any>(null);
   const [currentUser, setCurrentUser] = useState<any>(null);
+  const [account, setAccount] = useState<any>({});
 
   useEffect(() => {
-    const fetchData = async () => {
-      const userData = await getUser(user.id);
-      const companyData = await getCompanies();
-      // make sure current company is first option
-      companyData?.data?.sort((companyA, companyB) => {
-        return companyA.id == userData?.data?.company_id ? -1 : 1;
-      });
-      //console.log(companyData, user?.company_id);
-      setCompanies(companyData?.data);
-      setCurrentUser(userData?.data);
+    const fetchAccountData = async () => {
+      const accountData = await getAccount(user.id);
+
+      setAccount(accountData?.data);
     };
-    fetchData();
+    fetchAccountData();
   }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      const companyData = await getCompanies();
+
+      companyData?.data?.sort((companyA, companyB) => {
+        return companyA.id == account?.company_id ? -1 : 1;
+      });
+      console.log('company data ', companyData);
+      setCompanies(companyData?.data);
+
+      setCurrentUser(account.users);
+    };
+    if (account) {
+      fetchData();
+    }
+  }, [account]);
 
   return (
     <form

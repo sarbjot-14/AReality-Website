@@ -9,7 +9,7 @@ export async function getUser(userId: number) {
   }
 }
 
-export type putUserParam = { full_name: string; company_id: number };
+export type putUserParam = { full_name: string };
 export async function putUser(userId: number, payLoad: putUserParam) {
   try {
     return await supabase

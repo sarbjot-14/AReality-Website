@@ -11,21 +11,9 @@ export default function RootLayout({
   children
 }: PropsWithChildren) {
   return (
-    <html lang="en">
-      <body className="bg-white loading">
-        <SupabaseProvider>
-          {/* @ts-expect-error */}
-          <Navbar />
-          <main
-            id="skip"
-            className="min-h-[calc(100dvh-4rem)] md:min-h[calc(100dvh-5rem)]"
-          >
-            <SideBar></SideBar>
-            {children}
-          </main>
-          <Footer />
-        </SupabaseProvider>
-      </body>
-    </html>
+    <div className="bg-white loading max-h-500 ">
+      <SideBar></SideBar>
+      {children}
+    </div>
   );
 }

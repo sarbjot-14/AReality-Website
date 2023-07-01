@@ -9,6 +9,40 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      accounts: {
+        Row: {
+          company_id: number | null
+          created_at: string | null
+          id: number
+          user_id: string | null
+        }
+        Insert: {
+          company_id?: number | null
+          created_at?: string | null
+          id?: number
+          user_id?: string | null
+        }
+        Update: {
+          company_id?: number | null
+          created_at?: string | null
+          id?: number
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "accounts_company_id_fkey"
+            columns: ["company_id"]
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "accounts_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       companies: {
         Row: {
           created_at: string | null
@@ -196,7 +230,6 @@ export interface Database {
         Row: {
           avatar_url: string | null
           billing_address: Json | null
-          company_id: number | null
           email_contact: string | null
           full_name: string | null
           id: string
@@ -206,7 +239,6 @@ export interface Database {
         Insert: {
           avatar_url?: string | null
           billing_address?: Json | null
-          company_id?: number | null
           email_contact?: string | null
           full_name?: string | null
           id: string
@@ -216,7 +248,6 @@ export interface Database {
         Update: {
           avatar_url?: string | null
           billing_address?: Json | null
-          company_id?: number | null
           email_contact?: string | null
           full_name?: string | null
           id?: string
@@ -224,12 +255,6 @@ export interface Database {
           phone_contact?: string | null
         }
         Relationships: [
-          {
-            foreignKeyName: "users_company_id_fkey"
-            columns: ["company_id"]
-            referencedRelation: "companies"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "users_id_fkey"
             columns: ["id"]
