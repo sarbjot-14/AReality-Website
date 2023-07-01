@@ -1,6 +1,6 @@
 import { supabase } from './index';
 
-export async function getAccount(userId: number) {
+export async function getAccount(userId: any) {
   try {
     return await supabase
       .from('accounts')

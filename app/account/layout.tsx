@@ -11,7 +11,7 @@ export default function RootLayout({
   children
 }: PropsWithChildren) {
   return (
-    <div className="bg-white loading max-h-500 ">
+    <div className="bg-white loading max-h-500 ml-24 md:ml-52 ">
       <SideBar></SideBar>
       {children}
     </div>

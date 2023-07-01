@@ -26,7 +26,7 @@ export default async function Account() {
 
   return (
     <section className="mb-32   ">
-      <div className="max-w-3xl px-4 py-8 sm:px-6 sm:pt-24 lg:px-8 pt-24 md:pt-10  ml-20 md:mx-auto">
+      <div className="max-w-3xl px-4 py-8 sm:px-6 sm:pt-24 lg:px-8 pt-24 md:pt-10  md:mx-auto">
         <div className="sm:align-center sm:flex sm:flex-col  gap-10 items-center ">
           <h1 className="text-4xl text-black font-extrabold  sm:text-center sm:text-6xl">
             Account
