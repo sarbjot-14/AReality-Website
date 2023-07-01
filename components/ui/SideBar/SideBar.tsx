@@ -7,7 +7,7 @@ const SideBar = () => {
       className="fixed  left-0  z-0  h-full  transition-transform -translate-x-full translate-x-0 w-16 md:w-52 "
       aria-label="Sidebar"
     >
-      <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800  pt-20">
+      <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800  pt-18">
         <ul className="space-y-2 font-medium ">
           <li className="">
             <a
