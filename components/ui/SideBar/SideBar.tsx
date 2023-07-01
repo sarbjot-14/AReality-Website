@@ -4,10 +4,10 @@ const SideBar = () => {
   return (
     <aside
       id="default-sidebar"
-      className="fixed  left-0 z-0 w-30 h-full  transition-transform -translate-x-full sm:translate-x-0"
+      className="fixed  left-0 z-0  h-full  transition-transform -translate-x-full translate-x-0 w-16 md:w-52 "
       aria-label="Sidebar"
     >
-      <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+      <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800 ">
         <ul className="space-y-2 font-medium">
           <li>
             <a
@@ -29,7 +29,7 @@ const SideBar = () => {
                 />
               </svg>
 
-              <span className="ml-3">Effects</span>
+              <span className="ml-3 hidden md:block">Effects</span>
             </a>
           </li>
           <li>
@@ -57,7 +57,7 @@ const SideBar = () => {
                 />
               </svg>
 
-              <span className="ml-3">Locations</span>
+              <span className="ml-3 hidden md:block ">Locations</span>
             </a>
           </li>
           <li>
@@ -80,7 +80,7 @@ const SideBar = () => {
                 />
               </svg>
 
-              <span className="ml-3">Campaigns</span>
+              <span className="ml-3 hidden md:block ">Campaigns</span>
             </a>
           </li>
         </ul>

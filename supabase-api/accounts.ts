@@ -1,7 +1,6 @@
 import { supabase } from './index';
 
 export async function getAccount(userId: number) {
-  //deleteAccounts();
   try {
     return await supabase
       .from('accounts')
@@ -23,9 +22,8 @@ export async function getAccount(userId: number) {
 
 export type putAccountParam = { company_id: number; user_id: string };
 export async function putAccount(userId: number, payLoad: putAccountParam) {
-  //console.log('upaating ', payLoad);
   const account = await getAccount(userId);
-  console.log('what the fuck', account);
+
   if (account?.data != null) {
     const { data, error } = await supabase
       .from('accounts')

@@ -65,7 +65,7 @@ const ProfileForm = ({ user }: any) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className=" max-w-lg border-2 border-zinc-300 rounded-xl p-5"
+      className=" max-w-lg border-2 border-zinc-300 rounded-xl p-5 "
     >
       <h2 className="text-base font-semibold leading-7 text-gray-900">
         Profile

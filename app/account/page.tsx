@@ -13,10 +13,9 @@ import { redirect } from 'next/navigation';
 import { ReactNode } from 'react';
 
 export default async function Account() {
-  const [session, userDetails, subscription] = await Promise.all([
+  const [session, userDetails] = await Promise.all([
     getSession(),
-    getUserDetails(),
-    getSubscription()
+    getUserDetails()
   ]);
 
   const user = session?.user;
@@ -25,17 +24,9 @@ export default async function Account() {
     return redirect('/signin');
   }
 
-  const subscriptionPrice =
-    subscription &&
-    new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: subscription?.prices?.currency!,
-      minimumFractionDigits: 0
-    }).format((subscription?.prices?.unit_amount || 0) / 100);
-
   return (
     <section className="mb-32 ">
-      <div className="max-w-3xl px-4 py-8 mx-auto sm:px-6 sm:pt-24 lg:px-8">
+      <div className="max-w-3xl px-4 py-8 mx-auto sm:px-6 sm:pt-24 lg:px-8 ml-20 md:ml-0">
         <div className="sm:align-center sm:flex sm:flex-col  gap-10 items-center">
           <h1 className="text-4xl text-black font-extrabold  sm:text-center sm:text-6xl">
             Account
