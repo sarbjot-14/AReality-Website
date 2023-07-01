@@ -1,11 +1,11 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
-import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs';
-import { useRouter } from 'next/navigation';
-
-import type { SupabaseClient } from '@supabase/auth-helpers-nextjs';
 import type { Database } from '@/types_db';
+import { MantineProvider } from '@mantine/core';
+import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs';
+import type { SupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { useRouter } from 'next/navigation';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 type SupabaseContext = {
   supabase: SupabaseClient<Database>;
@@ -34,9 +34,11 @@ export default function SupabaseProvider({
   }, [router, supabase]);
 
   return (
-    <Context.Provider value={{ supabase }}>
-      <>{children}</>
-    </Context.Provider>
+    <MantineProvider withGlobalStyles withNormalizeCSS>
+      <Context.Provider value={{ supabase }}>
+        <>{children}</>
+      </Context.Provider>
+    </MantineProvider>
   );
 }
 
