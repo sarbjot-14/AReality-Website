@@ -20,6 +20,19 @@ export async function getAccount(userId: any) {
   }
 }
 
+export async function getAccountWithAccountId(accountId: number) {
+  try {
+    return await supabase
+      .from('accounts')
+      .select('*,users (*), locations(*), effects(*)')
+      .eq('id', accountId)
+      .single();
+  } catch (error) {
+    console.error('Error:', error);
+    return null;
+  }
+}
+
 export type putAccountParam = { company_id: number; user_id: string };
 export async function putAccount(userId: number, payLoad: putAccountParam) {
   const account = await getAccount(userId);

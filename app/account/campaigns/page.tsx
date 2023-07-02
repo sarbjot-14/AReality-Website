@@ -1,36 +1,44 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { getEffects } from '@/supabase-api/effects';
-import { callGetUserDetails } from './actions';
+import { getCampaigns } from '@/supabase-api/campaigns';
+import { callGetUserDetails } from '@/utils/shared-server-functions';
 import { getAccount } from '@/supabase-api/accounts';
 import Card from '../../../components/ui/Card/Card';
+import { useRouter } from 'next/navigation';
 
-const Effects = () => {
-  const [effects, setEffects] = useState<any>(null);
+const Campaigns = () => {
+  const [campaigns, setCampaigns] = useState<any>(null);
+  const router = useRouter();
 
   useEffect(() => {
-    const fetchEffects = async () => {
+    const fetchCampaigns = async () => {
       const user = await callGetUserDetails();
+
       const account: any = await getAccount(user?.id);
 
-      const fetchData = await getEffects(account?.data?.id);
+      const fetchData = await getCampaigns(account?.data?.id);
+      console.log(fetchData);
 
-      setEffects(fetchData?.data);
+      setCampaigns(fetchData?.data);
     };
-    fetchEffects();
+    fetchCampaigns();
   }, []);
   return (
     <div className="text-black text-lg">
-      {effects?.map((effect: any) => {
+      {campaigns?.map((campaign: any) => {
         return (
-          <Card name={effect.name} description={'Configure'}></Card>
-          // <div key={effect.id} className="text-black">
-          //   {effect.name}
-          // </div>
+          <div
+            onClick={() => {
+              router.push(`/account/campaigns/${campaign.id}`);
+              console.log('wwhhhat');
+            }}
+          >
+            <Card name={campaign.title} description={''}></Card>
+          </div>
         );
       })}
     </div>
   );
 };
 
-export default Effects;
+export default Campaigns;

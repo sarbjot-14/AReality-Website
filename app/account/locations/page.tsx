@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { getLocations } from '@/supabase-api/locations';
-import { callGetUserDetails } from './actions';
+import { callGetUserDetails } from '@/utils/shared-server-functions';
 import { getAccount } from '@/supabase-api/accounts';
 import Card from '../../../components/ui/Card/Card';
 
