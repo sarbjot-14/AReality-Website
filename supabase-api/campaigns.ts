@@ -24,3 +24,16 @@ export async function getCampaign(campaignId: number) {
     return null;
   }
 }
+
+export async function updateCampaign(campaignId: number, data: any) {
+  try {
+    return await supabase
+      .from('campaigns')
+      .update(data)
+      .eq('id', campaignId)
+      .select();
+  } catch (error) {
+    console.error('Error:', error);
+    return null;
+  }
+}

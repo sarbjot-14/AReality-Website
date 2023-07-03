@@ -44,7 +44,6 @@ export async function putAccount(userId: number, payLoad: putAccountParam) {
       .eq('user_id', userId)
       .select();
   } else {
-    console.log('inserting');
     const { data, error } = await supabase
       .from('accounts')
       .insert([payLoad])

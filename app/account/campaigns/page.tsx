@@ -1,10 +1,11 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+
+import Card from '../../../components/ui/Card/Card';
+import { getAccount } from '@/supabase-api/accounts';
 import { getCampaigns } from '@/supabase-api/campaigns';
 import { callGetUserDetails } from '@/utils/shared-server-functions';
-import { getAccount } from '@/supabase-api/accounts';
-import Card from '../../../components/ui/Card/Card';
 import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 
 const Campaigns = () => {
   const [campaigns, setCampaigns] = useState<any>(null);
@@ -17,7 +18,6 @@ const Campaigns = () => {
       const account: any = await getAccount(user?.id);
 
       const fetchData = await getCampaigns(account?.data?.id);
-      console.log(fetchData);
 
       setCampaigns(fetchData?.data);
     };
@@ -30,7 +30,6 @@ const Campaigns = () => {
           <div
             onClick={() => {
               router.push(`/account/campaigns/${campaign.id}`);
-              console.log('wwhhhat');
             }}
           >
             <Card name={campaign.title} description={''}></Card>

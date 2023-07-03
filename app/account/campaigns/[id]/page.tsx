@@ -1,8 +1,10 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
-import { getCampaign } from '@/supabase-api/campaigns';
+
+import CallToActionForm from './components/CallToActionFrom/CallToActionForm';
 import CampaignForm from './components/CampaignForm/CampaignForm';
+import { getCampaign } from '@/supabase-api/campaigns';
+import { useParams } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 
 const Page = () => {
   const params = useParams();
@@ -12,7 +14,6 @@ const Page = () => {
   useEffect(() => {
     const fetchData = async () => {
       const campaignData = await getCampaign(parseInt(campaignId));
-      console.log('camkaign data', campaignData);
       setCampaign(campaignData?.data);
     };
     fetchData();
@@ -22,8 +23,9 @@ const Page = () => {
       <p>
         Post:{campaignId} {campaign?.title}
       </p>
-      <div>
+      <div className="flex flex-col gap-10 items-center my-16">
         <CampaignForm campaign={campaign}></CampaignForm>
+        <CallToActionForm campaign={campaign}></CallToActionForm>
       </div>
     </div>
   );

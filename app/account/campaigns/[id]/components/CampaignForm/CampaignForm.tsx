@@ -1,184 +1,175 @@
 'use client';
 
 import { getAccountWithAccountId } from '@/supabase-api/accounts';
-// import {
-//   getAccount,
-//   putAccount,
-//   putAccountParam
-// } from '@/supabase-api/accounts';
-import { getCompanies } from '@/supabase-api/companies';
-import { getEffects } from '@/supabase-api/effects';
-import { getUser, putUser, putUserParam } from '@/supabase-api/users';
-import { MultiSelect } from '@mantine/core';
+import { updateCampaign } from '@/supabase-api/campaigns';
+import {
+  updateCampaignLocations,
+  resetLocations
+} from '@/supabase-api/locations';
+import {
+  Button,
+  TextField,
+  Select,
+  MenuItem,
+  OutlinedInput,
+  SelectChangeEvent,
+  InputLabel
+} from '@mui/material';
+import { useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import * as yup from 'yup';
 
-type Inputs = {
-  title: string;
-  effectId: number;
-  locationsIds: number;
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250
+    }
+  }
 };
+function getStyles(name: string, personName: string[]) {
+  return {};
+}
+
+const validationSchema = yup.object({
+  title: yup.string().required('Title is required'),
+  effect: yup.number().required('Password is required')
+});
 const CampaignForm = ({ campaign }: any) => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors }
-  } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log('submitting ', data);
-    // const payLoad: putAccountParam = {
-    //   company_id: data.companyId,
-    //   user_id: user.id
-    // };
-    // await putAccount(user.id, payLoad);
-    // const userParams: putUserParam = { full_name: data.title };
-    // await putUser(user.id, userParams);
-  };
-
-  //console.log(watch("example")) // watch input value by passing the name of it
-
   const [effects, setEffects] = useState<any>(null);
   const [locations, setLocations] = useState<any>([]);
-  // const [currentUser, setCurrentUser] = useState<any>(null);
+
   const [account, setAccount] = useState<any>({});
+
   useEffect(() => {
     const fetchAccountData = async () => {
       if (campaign?.id) {
         const accountData = await getAccountWithAccountId(campaign?.account_id);
-        console.log('account data ', accountData);
+
         setAccount(accountData?.data);
-        console.log('effects ', accountData?.data?.effects);
+
         setEffects(accountData?.data?.effects);
         setLocations(accountData?.data?.locations);
+        formik.setFieldValue('title', campaign.title);
+        formik.setFieldValue('effect', campaign?.effects?.id);
+        formik.setFieldValue(
+          'locations',
+          campaign?.locations.map((loc: any) => {
+            return loc.name;
+          })
+        );
       }
     };
     fetchAccountData();
   }, [campaign]);
-  useEffect(() => {
-    const fetchData = async () => {
-      // const companyData = await getEffects(1);
-      // companyData?.data?.sort((companyA, companyB) => {
-      //   return companyA.id == account?.company_id ? -1 : 1;
-      // });
-      // setEffects(companyData?.data);
-      // setCurrentUser(account.users);
-    };
-    fetchData();
-  }, []);
+
+  const formik = useFormik({
+    initialValues: {
+      title: campaign?.title || '',
+      effect: campaign?.effect || 0,
+      locations: campaign?.locations || []
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (values) => {
+      // update title and effect
+      await updateCampaign(campaign.id, {
+        effect_id: values?.effect,
+        title: values?.title
+      });
+      // update previous locations campaign id to null
+      await resetLocations(campaign.id);
+      // update campaign with new locations
+      for (let i = 0; i < account.locations.length; i++) {
+        if (values?.locations.includes(account.locations[i].name)) {
+          await updateCampaignLocations(account.locations[i].id, campaign.id);
+        }
+      }
+    }
+  });
+  const handleChange = (event: SelectChangeEvent<any>) => {
+    const {
+      target: { value }
+    } = event;
+    formik.setFieldValue(
+      'locations',
+      typeof value === 'string' ? value.split(',') : value
+    );
+  };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className=" max-w-lg border-2 border-zinc-300 rounded-xl p-5 "
-    >
-      <h2 className="text-base font-semibold leading-7 text-gray-900">
-        Effect Campaign
-      </h2>
+    <div className="sm:w-2/3 w-full">
+      <form
+        className=" border-2 border-zinc-300 rounded-xl p-5 flex flex-col gap-10 "
+        onSubmit={formik?.handleSubmit}
+      >
+        <div>
+          <InputLabel className="mb-4"> Title:</InputLabel>{' '}
+          <TextField
+            fullWidth
+            id="title"
+            name="title"
+            label="Title"
+            value={formik?.values.title}
+            onChange={formik?.handleChange}
+            error={formik?.touched.title && Boolean(formik?.errors.title)}
+          />
+        </div>
 
-      <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 flex flex-col">
-        <div className="sm:col-span-4">
-          <label className="block text-sm font-medium leading-6 text-gray-900">
-            Title
-          </label>
-          <div className="mt-2">
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-              <input
-                {...register('title', { required: true })}
-                type="text"
-                name="title"
-                id="title"
-                className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                placeholder={campaign?.title}
-              ></input>
-            </div>
-            {errors.title?.type && (
-              <p className="text-red-500" role="alert">
-                {errors.title?.type}
-              </p>
-            )}
-          </div>
+        <div>
+          <InputLabel className="mb-4"> Effect:</InputLabel>{' '}
+          <Select
+            fullWidth
+            id="effect"
+            name="effect"
+            label="Effect"
+            value={formik?.values.effect}
+            onChange={formik?.handleChange}
+            error={formik?.touched.effect && Boolean(formik?.errors.effect)}
+          >
+            {effects?.map((effect: any) => {
+              return (
+                <MenuItem key={effect.id} value={effect.id}>
+                  {effect.name}
+                </MenuItem>
+              );
+            })}
+          </Select>
         </div>
-        <div className="sm:col-span-3">
-          <label className="block text-sm font-medium leading-6 text-gray-900">
-            Effect
-          </label>
-          <div className="mt-2">
-            <select
-              {...register('effectId', { required: true })}
-              id="effects"
-              name="effectId"
-              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-            >
-              {effects &&
-                effects.map((effect: any) => {
-                  return (
-                    <option key={effect.id} value={effect.id}>
-                      {effect.name}
-                    </option>
-                  );
-                })}
-            </select>
-          </div>
-          {errors.effectId?.type && (
-            <p className="text-red-500" role="alert">
-              {errors.effectId?.type}
-            </p>
-          )}
-        </div>
-        <div className="sm:col-span-3">
-          <label className="block text-sm font-medium leading-6 text-gray-900">
-            Effect
-          </label>
-          <div className="mt-2">
-            <MultiSelect
-              data={locations.map((loc: any) => {
-                return { label: loc.address, value: loc.id };
-              })}
-              {...register('locationsIds', { required: true })}
-              label="Locations"
-              placeholder="Pick all that you like"
-            />
-            <select
-              multiple
-              {...register('effectId', { required: true })}
-              id="effects"
-              name="effectId"
-              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-            >
-              {locations &&
-                locations.map((effect: any) => {
-                  return (
-                    <option key={effect.id} value={effect.id}>
-                      {effect.name}
-                    </option>
-                  );
-                })}
-            </select>
-          </div>
-          {errors.effectId?.type && (
-            <p className="text-red-500" role="alert">
-              {errors.effectId?.type}
-            </p>
-          )}
-        </div>
-      </div>
 
-      <div className="mt-6 flex items-center justify-end gap-x-6">
-        <button
-          type="button"
-          className="text-sm font-semibold leading-6 text-gray-900"
-        >
-          Cancel
-        </button>
+        <div>
+          <InputLabel className="mb-4"> Locations:</InputLabel>{' '}
+          <Select
+            fullWidth
+            labelId="demo-multiple-name-label"
+            id="demo-multiple-name"
+            multiple
+            value={formik?.values.locations}
+            onChange={handleChange}
+            input={<OutlinedInput label="Name" />}
+            MenuProps={MenuProps}
+          >
+            {locations?.map((loc: any) => (
+              <MenuItem
+                key={loc.id}
+                value={loc.name}
+                style={getStyles(loc.name, loc)}
+              >
+                {loc.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </div>
+
         <button
           type="submit"
           className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
           Save
         </button>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
 

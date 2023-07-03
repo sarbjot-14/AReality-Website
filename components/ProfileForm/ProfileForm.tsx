@@ -31,8 +31,6 @@ const ProfileForm = ({ user }: any) => {
     await putUser(user.id, userParams);
   };
 
-  //console.log(watch("example")) // watch input value by passing the name of it
-
   const [companies, setCompanies] = useState<any>(null);
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [account, setAccount] = useState<any>({});
