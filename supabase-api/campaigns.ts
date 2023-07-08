@@ -16,7 +16,7 @@ export async function getCampaign(campaignId: number) {
   try {
     return await supabase
       .from('campaigns')
-      .select('*, locations(*), effects(*)')
+      .select('*, effects(*)')
       .eq('id', campaignId)
       .single();
   } catch (error) {

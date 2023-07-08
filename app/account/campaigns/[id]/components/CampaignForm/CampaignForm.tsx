@@ -2,10 +2,7 @@
 
 import { getAccountWithAccountId } from '@/supabase-api/accounts';
 import { updateCampaign } from '@/supabase-api/campaigns';
-import {
-  updateCampaignLocations,
-  resetLocations
-} from '@/supabase-api/locations';
+
 import {
   Button,
   TextField,
@@ -39,7 +36,6 @@ const validationSchema = yup.object({
 });
 const CampaignForm = ({ campaign }: any) => {
   const [effects, setEffects] = useState<any>(null);
-  const [locations, setLocations] = useState<any>([]);
 
   const [account, setAccount] = useState<any>({});
 
@@ -51,15 +47,9 @@ const CampaignForm = ({ campaign }: any) => {
         setAccount(accountData?.data);
 
         setEffects(accountData?.data?.effects);
-        setLocations(accountData?.data?.locations);
+
         formik.setFieldValue('title', campaign.title);
         formik.setFieldValue('effect', campaign?.effects?.id);
-        formik.setFieldValue(
-          'locations',
-          campaign?.locations.map((loc: any) => {
-            return loc.name;
-          })
-        );
       }
     };
     fetchAccountData();
@@ -68,8 +58,7 @@ const CampaignForm = ({ campaign }: any) => {
   const formik = useFormik({
     initialValues: {
       title: campaign?.title || '',
-      effect: campaign?.effect || 0,
-      locations: campaign?.locations || []
+      effect: campaign?.effect || 0
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -78,25 +67,8 @@ const CampaignForm = ({ campaign }: any) => {
         effect_id: values?.effect,
         title: values?.title
       });
-      // update previous locations campaign id to null
-      await resetLocations(campaign.id);
-      // update campaign with new locations
-      for (let i = 0; i < account.locations.length; i++) {
-        if (values?.locations.includes(account.locations[i].name)) {
-          await updateCampaignLocations(account.locations[i].id, campaign.id);
-        }
-      }
     }
   });
-  const handleChange = (event: SelectChangeEvent<any>) => {
-    const {
-      target: { value }
-    } = event;
-    formik.setFieldValue(
-      'locations',
-      typeof value === 'string' ? value.split(',') : value
-    );
-  };
 
   return (
     <div className="sm:w-2/3 w-full">
@@ -135,30 +107,6 @@ const CampaignForm = ({ campaign }: any) => {
                 </MenuItem>
               );
             })}
-          </Select>
-        </div>
-
-        <div>
-          <InputLabel className="mb-4"> Locations:</InputLabel>{' '}
-          <Select
-            fullWidth
-            labelId="demo-multiple-name-label"
-            id="demo-multiple-name"
-            multiple
-            value={formik?.values.locations}
-            onChange={handleChange}
-            input={<OutlinedInput label="Name" />}
-            MenuProps={MenuProps}
-          >
-            {locations?.map((loc: any) => (
-              <MenuItem
-                key={loc.id}
-                value={loc.name}
-                style={getStyles(loc.name, loc)}
-              >
-                {loc.name}
-              </MenuItem>
-            ))}
           </Select>
         </div>
 

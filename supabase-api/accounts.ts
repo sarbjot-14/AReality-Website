@@ -24,7 +24,7 @@ export async function getAccountWithAccountId(accountId: number) {
   try {
     return await supabase
       .from('accounts')
-      .select('*,users (*), locations(*), effects(*)')
+      .select('*,users (*), effects(*)')
       .eq('id', accountId)
       .single();
   } catch (error) {
