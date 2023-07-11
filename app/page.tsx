@@ -5,7 +5,7 @@ export default async function LandingPage() {
     <>
       <div className="flex flex-col items-center p-10">
         <section className="bg-white dark:bg-gray-900">
-          <div className="grid max-w-screen-xl px-4 py-20 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
+          <div className="grid max-w-screen-xl px-4 lg:py-20 mx-auto  lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
             <div className="mr-auto place-self-center lg:col-span-7">
               <h1 className="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl text-black dark:text-white">
                 Empowering brands with engaging augmented reality tools
@@ -17,7 +17,7 @@ export default async function LandingPage() {
               </p>
               <a
                 href="#"
-                className="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
+                className="inline-flex items-center justify-center mb-5 px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
               >
                 Get started
                 <svg
@@ -51,7 +51,7 @@ export default async function LandingPage() {
             </div>
           </div>
         </section>
-        <section className="bg-white dark:bg-gray-900 mx-16 py-10">
+        <section className="bg-white dark:bg-gray-900 lg:mx-16 py-5 lg:py-10">
           <div className="gap-8 items-center py-16 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
             <img
               className="w-full dark:hidden"
@@ -93,7 +93,7 @@ export default async function LandingPage() {
             </div>
           </div>
         </section>
-        <section className="bg-white dark:bg-gray-900 mx-16 py-10">
+        <section className="bg-white dark:bg-gray-900 lg:mx-16 lg:py-10">
           <div className="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
             <div className="max-w-screen-md mb-8 lg:mb-16">
               <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
