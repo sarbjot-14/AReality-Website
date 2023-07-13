@@ -72,6 +72,7 @@ const CampaignForm = ({ campaign }: any) => {
 
   return (
     <div className="sm:w-2/3 w-full">
+      <h1 className="text-3xl text-black font-medium">Configure Campaign</h1>
       <form
         className=" border-2 border-zinc-300 rounded-xl p-5 flex flex-col gap-10 "
         onSubmit={formik?.handleSubmit}

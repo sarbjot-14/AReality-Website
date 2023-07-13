@@ -1,5 +1,6 @@
 'use client';
 
+import Card from '@/components/ui/Card/Card';
 import {
   getLinkActionWithCampaignId,
   updateLinkActionWithCampaignId
@@ -64,6 +65,10 @@ const CallToActionForm = ({ campaign }: any) => {
 
   return (
     <div className="sm:w-2/3 w-full">
+      <h1 className="text-3xl text-black font-medium">
+        Configure Call To Action
+      </h1>
+
       <form
         className=" border-2 border-zinc-300 rounded-xl p-5 flex flex-col gap-10"
         onSubmit={formik?.handleSubmit}
