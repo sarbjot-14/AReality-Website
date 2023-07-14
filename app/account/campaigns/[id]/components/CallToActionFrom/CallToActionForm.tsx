@@ -3,12 +3,16 @@
 import Card from '@/components/ui/Card/Card';
 import {
   getLinkActionWithCampaignId,
-  updateLinkActionWithCampaignId
+  getPromoActionWithCampaignId,
+  updateLinkActionWithCampaignId,
+  upsertPromoActionWithCampaignId
 } from '@/supabase-api/callToAction';
 import { Button, TextField, Select, MenuItem, InputLabel } from '@mui/material';
 import { useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import * as yup from 'yup';
+import { callGetUserDetails } from '@/utils/shared-server-functions';
+import { supabase } from '@/supabase-api';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -26,20 +30,31 @@ function getStyles(name: string, personName: string[]) {
 
 const validationSchema = yup.object({
   prompt: yup.string().required('Prompt is required'),
-  icon: yup.string().required('Icon is required'),
+
   link: yup.string().required('Link is required')
 });
 const CallToActionForm = ({ campaign }: any) => {
-  const [linkAction, setLinkAction] = useState<any>(null);
+  const [promoAction, setPromoAction] = useState<any>(null);
+  const [file, setFile] = useState<any>(null);
+  const [user, setUser] = useState<any>(null);
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userData = await callGetUserDetails();
+      setUser(userData);
+    };
+    fetchUser();
+  }, [campaign]);
   useEffect(() => {
     const fetchAccountData = async () => {
       if (campaign?.id) {
-        const linkActionData = await getLinkActionWithCampaignId(campaign?.id);
-        formik.setFieldValue('prompt', linkActionData?.data?.prompt);
-        formik.setFieldValue('icon', linkActionData?.data?.icon);
-        formik.setFieldValue('link', linkActionData?.data?.link);
-        setLinkAction(linkActionData?.data);
+        const promoActionData = await getPromoActionWithCampaignId(
+          campaign?.id
+        );
+        formik.setFieldValue('prompt', promoActionData?.data?.prompt);
+
+        formik.setFieldValue('link', promoActionData?.data?.link);
+        setPromoAction(promoActionData?.data);
       }
     };
     fetchAccountData();
@@ -47,21 +62,38 @@ const CallToActionForm = ({ campaign }: any) => {
 
   const formik = useFormik({
     initialValues: {
-      prompt: linkAction?.prompt || '',
-      icon: linkAction?.icon || '',
-      link: linkAction?.link || ''
+      prompt: promoAction?.prompt || '',
+      link: promoAction?.link || ''
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      await updateLinkActionWithCampaignId(campaign.id, {
-        prompt: values?.prompt,
-        link: values?.link,
-        icon: values?.icon
-      });
+      console.log('file is ', file);
+      var re = /(?:\.([^.]+))?$/;
+
+      var ext = file?.name.substr(file?.name.lastIndexOf('.') + 1);
+      const uploadName = campaign.id + '.' + ext;
+      const { data, error } = await supabase.storage
+        .from('images')
+        .upload(uploadName, file, {
+          cacheControl: '3600',
+          upsert: true
+        });
+      if (error) {
+        console.log(error);
+      } else {
+        await upsertPromoActionWithCampaignId(campaign.id, {
+          campaign_id: campaign.id,
+          prompt: values?.prompt,
+          link: values?.link,
+          image_name: uploadName
+        });
+      }
     }
   });
-
-  const icons = ['TikTok', 'Instagram', 'Youtube', 'Facebook', 'Whatsapp'];
+  const onFileChange = (event: any) => {
+    // Update the state
+    setFile(event.target.files[0]);
+  };
 
   return (
     <div className="sm:w-2/3 w-full">
@@ -87,24 +119,9 @@ const CallToActionForm = ({ campaign }: any) => {
         </div>
 
         <div>
-          <InputLabel className="mb-4">Icon:</InputLabel>
-          <Select
-            fullWidth
-            id="icon"
-            name="icon"
-            label="Icon"
-            value={formik?.values.icon}
-            onChange={formik?.handleChange}
-            error={formik?.touched.icon && Boolean(formik?.errors.icon)}
-          >
-            {icons?.map((icon: any) => {
-              return (
-                <MenuItem key={icon} value={icon}>
-                  {icon}
-                </MenuItem>
-              );
-            })}
-          </Select>
+          <InputLabel className="mb-4">Promo Image:</InputLabel>
+          <input type="file" onChange={onFileChange} />
+          <p className="text-black">File Name: {file?.name}</p>
         </div>
         <div>
           <InputLabel className="mb-4">Link:</InputLabel>
