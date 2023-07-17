@@ -71,7 +71,7 @@ const CampaignForm = ({ campaign }: any) => {
   });
 
   return (
-    <div className="sm:w-2/3 w-full">
+    <div className="w-full">
       <h1 className="text-3xl text-black font-medium">Configure Campaign</h1>
       <form
         className=" border-2 border-zinc-300 rounded-xl p-5 flex flex-col gap-10 "
@@ -113,7 +113,7 @@ const CampaignForm = ({ campaign }: any) => {
 
         <button
           type="submit"
-          className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          className="w-1/2 mx-auto rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
           Save
         </button>

@@ -96,7 +96,7 @@ const CallToActionForm = ({ campaign }: any) => {
   };
 
   return (
-    <div className="sm:w-2/3 w-full">
+    <div className="w-full">
       <h1 className="text-3xl text-black font-medium">
         Configure Call To Action
       </h1>

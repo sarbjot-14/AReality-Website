@@ -27,8 +27,8 @@ const Page = () => {
   }, [campaignId]);
   return (
     <div>
-      <div className="flex flex-col gap-10 items-center my-16">
-        <div className="mx-auto">
+      <div className="">
+        {/* <div className="">
           <div
             onClick={handleClick}
             className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
@@ -53,7 +53,7 @@ const Page = () => {
               </svg>
             </p>
           </div>
-        </div>
+        </div> */}
         <CampaignForm campaign={campaign}></CampaignForm>
         <CallToActionForm campaign={campaign}></CallToActionForm>
       </div>

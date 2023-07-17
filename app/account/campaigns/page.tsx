@@ -16,6 +16,9 @@ const Campaigns = () => {
       const user = await callGetUserDetails();
 
       const account: any = await getAccount(user?.id);
+      if (account.error) {
+        router.push('/account/settings');
+      }
 
       const fetchData = await getCampaigns(account?.data?.id);
 

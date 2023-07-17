@@ -1,6 +1,7 @@
 import { supabase } from './index';
 
 export async function getAccount(userId: any) {
+  console.log('getting account with user id ', userId);
   try {
     return await supabase
       .from('accounts')
@@ -8,6 +9,9 @@ export async function getAccount(userId: any) {
         `
   *,
   users (
+    *
+  ),
+  companies (
     *
   )
 `
@@ -24,7 +28,7 @@ export async function getAccountWithAccountId(accountId: number) {
   try {
     return await supabase
       .from('accounts')
-      .select('*,users (*), effects(*)')
+      .select('*,users(*), companies(*), effects(*)')
       .eq('id', accountId)
       .single();
   } catch (error) {
@@ -33,21 +37,20 @@ export async function getAccountWithAccountId(accountId: number) {
   }
 }
 
-export type putAccountParam = { company_id: number; user_id: string };
-export async function putAccount(userId: number, payLoad: putAccountParam) {
-  const account = await getAccount(userId);
-
-  if (account?.data != null) {
-    const { data, error } = await supabase
+export async function putAccount(id: number, payLoad: any) {
+  if (id) {
+    return await supabase
       .from('accounts')
       .update(payLoad)
-      .eq('user_id', userId)
-      .select();
+      .eq('id', id)
+      .select('*,users(*), companies(*)')
+      .single();
   } else {
-    const { data, error } = await supabase
+    return await supabase
       .from('accounts')
       .insert([payLoad])
-      .select();
+      .select('*,users(*), companies(*)')
+      .single();
   }
 }
 
