@@ -23,7 +23,6 @@ export async function getCompanyWithId(companyId: number) {
 }
 
 export async function putCompany(companyId: number, payLoad: any) {
-  console.log('updating iwht company id ', companyId);
   const company = await getCompanyWithId(companyId);
 
   if (company?.data != null) {

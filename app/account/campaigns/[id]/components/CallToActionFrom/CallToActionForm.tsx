@@ -67,7 +67,6 @@ const CallToActionForm = ({ campaign }: any) => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log('file is ', file);
       var re = /(?:\.([^.]+))?$/;
 
       var ext = file?.name.substr(file?.name.lastIndexOf('.') + 1);

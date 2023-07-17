@@ -8,6 +8,8 @@ import {
 import { updateCampaign } from '@/supabase-api/campaigns';
 import { putCompany } from '@/supabase-api/companies';
 import { callGetUserDetails } from '@/utils/shared-server-functions';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 import {
   Button,
@@ -16,7 +18,8 @@ import {
   MenuItem,
   OutlinedInput,
   SelectChangeEvent,
-  InputLabel
+  InputLabel,
+  AlertProps
 } from '@mui/material';
 import { useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
@@ -35,15 +38,7 @@ const MenuProps = {
 function getStyles(name: string, personName: string[]) {
   return {};
 }
-/*
-full_name
-Title
-Contact Email
-Company Name
-Product/Services Description
-Website Link
 
-*/
 const validationSchema = yup.object({
   company_name: yup.string().required('Company Name is required'),
   industry: yup.string().required('Industry is required'),
@@ -52,19 +47,35 @@ const validationSchema = yup.object({
   title: yup.string().required('Title is required'),
   email: yup.string().email().required('Email is required')
 });
+
 const CampaignForm = () => {
   //   const [effects, setEffects] = useState<any>(null);
   const [campaign, setCampaign] = useState<any>({});
   const [account, setAccount] = useState<any>({});
   const [user, setUser] = useState<any>({});
+  const [open, setOpen] = useState(false);
+  const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref
+  ) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   useEffect(() => {
     const getData = async () => {
       const userData = await callGetUserDetails();
-      console.log('use is ', userData);
       setUser(userData);
       const accountData: any = await getAccount(userData?.id);
-      console.log('account data is ', accountData);
       setAccount(accountData?.data);
     };
     getData();
@@ -97,8 +108,6 @@ const CampaignForm = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log('submitting values ', values);
-
       const companyResult = await putCompany(account?.company_id, {
         name: values.company_name,
         industry: values.industry,
@@ -113,21 +122,28 @@ const CampaignForm = () => {
           title: values.title,
           email: values.email
         });
-        setAccount(accountResult?.data);
-        console.log('account result', accountResult);
+        if (accountResult?.data) {
+          setOpen(true);
+          setAccount(accountResult?.data);
+        }
       }
     }
   });
 
   return (
     <div className="sm:w-2/3 w-full">
+      <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          Saved Settings
+        </Alert>
+      </Snackbar>
       <h1 className="text-3xl text-black font-medium">Account Settings</h1>
       <form
         className=" border-2 border-zinc-300 rounded-xl p-5 flex flex-col gap-10 "
         onSubmit={formik?.handleSubmit}
       >
         <div className="">
-          <InputLabel className="mb-1"> Company Name:</InputLabel>
+          {/* <InputLabel className="mb-1"> Company Name:</InputLabel> */}
           <TextField
             fullWidth
             id="company_name"
@@ -145,7 +161,7 @@ const CampaignForm = () => {
           </p>
         </div>
         <div className="">
-          <InputLabel className="mb-1"> Industry:</InputLabel>
+          {/* <InputLabel className="mb-1"> Industry:</InputLabel> */}
           <TextField
             fullWidth
             id="industry"
@@ -160,7 +176,7 @@ const CampaignForm = () => {
           </p>
         </div>
         <div className="">
-          <InputLabel className="mb-1"> Company Website:</InputLabel>
+          {/* <InputLabel className="mb-1"> Company Website:</InputLabel> */}
           <TextField
             fullWidth
             id="company_website"
@@ -179,7 +195,7 @@ const CampaignForm = () => {
         </div>
 
         <div className="">
-          <InputLabel className="mb-1"> Full Name:</InputLabel>
+          {/* <InputLabel className="mb-1"> Full Name:</InputLabel> */}
           <TextField
             fullWidth
             id="full_name"
@@ -196,7 +212,7 @@ const CampaignForm = () => {
           </p>
         </div>
         <div className="">
-          <InputLabel className="mb-1"> Title:</InputLabel>
+          {/* <InputLabel className="mb-1"> Title:</InputLabel> */}
           <TextField
             fullWidth
             id="title"
@@ -211,7 +227,7 @@ const CampaignForm = () => {
           </p>
         </div>
         <div className="">
-          <InputLabel className="mb-1"> Email:</InputLabel>
+          {/* <InputLabel className="mb-1"> Email:</InputLabel> */}
           <TextField
             fullWidth
             id="email"

@@ -94,7 +94,6 @@ const Analytics = () => {
           return point.clicked ? total + 1 : total;
         }, 0);
         totClicks += clicksCount;
-        //console.log('click count ', clicksCount);
         graphDataArray.push({
           date: getFormattedDate(allDay[i]),
 
@@ -102,7 +101,6 @@ const Analytics = () => {
           impressions: impressionsCount
         });
       }
-      console.log('final data ', graphDataArray);
       setGraphData(graphDataArray);
       setTotalClicks(totClicks);
       setTotalImpressions(totImpressions);
