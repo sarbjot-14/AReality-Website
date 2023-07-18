@@ -194,3 +194,5 @@ npm run dev
 yarn
 yarn dev
 ```
+
+sudo pnpm update
