@@ -82,6 +82,9 @@ devDependencies:
   '@types/react':
     specifier: ^18.2.15
     version: 18.2.15
+  '@types/video-react':
+    specifier: ^0.15.1
+    version: 0.15.1
   autoprefixer:
     specifier: ^10.4.14
     version: 10.4.14(postcss@8.4.26)
@@ -1058,6 +1061,12 @@ packages:
 
   /@types/scheduler@0.16.3:
     resolution: {integrity: sha512-5cJ8CB4yAx7BH1oMvdU0Jh9lrEXyPkar6F9G/ERswkCuvP4KQZfZkSjcMbAICCpQTN4OuZn8tz0HiKv9TGZgrQ==}
+
+  /@types/video-react@0.15.1:
+    resolution: {integrity: sha512-OFndW9sVCX7yTHnt6cGWE88IAVMm6RcS4YN15N+i0o5yYDFQhPc3ChmiyNkQXk6HuBBLQDu6Fyy5FH3Dv/F5IA==}
+    dependencies:
+      '@types/react': 18.2.15
+    dev: true
 
   /@types/websocket@1.0.5:
     resolution: {integrity: sha512-NbsqiNX9CnEfC1Z0Vf4mE1SgAJ07JnRYcNex7AJ9zAVzmiGHmjKFEk7O4TJIsgv2B1sLEb6owKFZrACwdYngsQ==}
