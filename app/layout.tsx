@@ -4,6 +4,7 @@ import Navbar from '@/components/ui/Navbar';
 import NavBarBurger from '@/components/ui/Navbar/NavBarBurger';
 import { PropsWithChildren } from 'react';
 import 'styles/main.css';
+export const dynamic = 'force-dynamic';
 
 const meta = {
   title: 'ReelEffect',
