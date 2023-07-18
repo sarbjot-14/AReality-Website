@@ -13,7 +13,7 @@ export async function getAccount(userId: any) {
   ),
   companies (
     *
-  )
+  ), effects(*)
 `
       )
       .eq('user_id', userId)

@@ -1,7 +1,8 @@
 'use client';
 
-import { getAccountWithAccountId } from '@/supabase-api/accounts';
-import { updateCampaign } from '@/supabase-api/campaigns';
+import { getAccount, getAccountWithAccountId } from '@/supabase-api/accounts';
+import { upsertCampaign } from '@/supabase-api/campaigns';
+import { callGetUserDetails } from '@/utils/shared-server-functions';
 
 import {
   Button,
@@ -10,11 +11,13 @@ import {
   MenuItem,
   OutlinedInput,
   SelectChangeEvent,
-  InputLabel
+  InputLabel,
+  Snackbar
 } from '@mui/material';
 import { useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import * as yup from 'yup';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -32,47 +35,85 @@ function getStyles(name: string, personName: string[]) {
 
 const validationSchema = yup.object({
   title: yup.string().required('Title is required'),
-  effect: yup.number().required('Password is required')
+  effect: yup.number().required('Effect is required')
 });
 const CampaignForm = ({ campaign }: any) => {
   const [effects, setEffects] = useState<any>(null);
 
   const [account, setAccount] = useState<any>({});
+  const [campaignInfo, setCampaignInfo] = useState<any>({});
+  const [open, setOpen] = useState(false);
+
+  const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref
+  ) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   useEffect(() => {
     const fetchAccountData = async () => {
-      if (campaign?.id) {
-        const accountData = await getAccountWithAccountId(campaign?.account_id);
-
-        setAccount(accountData?.data);
-
-        setEffects(accountData?.data?.effects);
-
-        formik.setFieldValue('title', campaign.title);
-        formik.setFieldValue('effect', campaign?.effects?.id);
+      if (campaign) {
+        setCampaignInfo(campaign);
       }
+      const user = await callGetUserDetails();
+      const accountData: any = await getAccount(user?.id);
+
+      setAccount(accountData?.data);
+      setEffects(accountData?.data?.effects);
     };
     fetchAccountData();
   }, [campaign]);
+  useEffect(() => {
+    const fetchAccountData = async () => {
+      if (campaignInfo?.id) {
+        formik.setFieldValue('title', campaignInfo.title);
+        formik.setFieldValue('effect', campaignInfo?.effect_id);
+      }
+    };
+    fetchAccountData();
+  }, [campaignInfo]);
 
   const formik = useFormik({
     initialValues: {
-      title: campaign?.title || '',
-      effect: campaign?.effect || 0
+      title: campaignInfo?.title || '',
+      effect: campaignInfo?.effect || 0
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       // update title and effect
-      await updateCampaign(campaign.id, {
+      const campaignData = await upsertCampaign(campaignInfo?.id, {
         effect_id: values?.effect,
-        title: values?.title
+        title: values?.title,
+        account_id: account?.id,
+        call_to_action_type: 'promo'
       });
+      if (campaignData?.data) {
+        setOpen(true);
+        console.log('updating ', campaignData?.data);
+        setCampaignInfo(campaignData?.data);
+      }
     }
   });
 
   return (
     <div className="w-full">
-      <h1 className="text-3xl text-black font-medium">Configure Campaign</h1>
+      <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          Saved Settings
+        </Alert>
+      </Snackbar>
+      <h1 className="text-3xl text-black font-medium">1. Configure Campaign</h1>
       <form
         className=" border-2 border-zinc-300 rounded-xl p-5 flex flex-col gap-10 "
         onSubmit={formik?.handleSubmit}
@@ -88,6 +129,9 @@ const CampaignForm = ({ campaign }: any) => {
             onChange={formik?.handleChange}
             error={formik?.touched.title && Boolean(formik?.errors.title)}
           />
+          <p className="text-red-500 text-sm">
+            {formik?.errors.title as string}
+          </p>
         </div>
 
         <div>
@@ -109,6 +153,9 @@ const CampaignForm = ({ campaign }: any) => {
               );
             })}
           </Select>
+          <p className="text-red-500 text-sm">
+            {formik?.errors.effect as string}
+          </p>
         </div>
 
         <button

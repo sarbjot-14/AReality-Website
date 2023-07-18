@@ -1,5 +1,6 @@
 'use client';
 
+import CreateCard from '@/components/ui/CreateCard/CreateCard';
 import Card from '../../../components/ui/Card/Card';
 import { getAccount } from '@/supabase-api/accounts';
 import { getCampaigns } from '@/supabase-api/campaigns';
@@ -27,7 +28,15 @@ const Campaigns = () => {
     fetchCampaigns();
   }, []);
   return (
-    <div className="text-black text-lg">
+    <div className="text-black text-lgf flex flex-wrap gap-5">
+      <div
+        onClick={() => {
+          router.push(`/account/campaigns/new`);
+        }}
+      >
+        <CreateCard></CreateCard>
+      </div>
+
       {campaigns?.map((campaign: any) => {
         return (
           <div

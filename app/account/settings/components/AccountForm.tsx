@@ -5,7 +5,6 @@ import {
   getAccountWithAccountId,
   putAccount
 } from '@/supabase-api/accounts';
-import { updateCampaign } from '@/supabase-api/campaigns';
 import { putCompany } from '@/supabase-api/companies';
 import { callGetUserDetails } from '@/utils/shared-server-functions';
 import Snackbar from '@mui/material/Snackbar';

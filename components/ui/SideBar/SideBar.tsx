@@ -1,6 +1,22 @@
-import React from 'react';
+'use client';
+import { getAccount } from '@/supabase-api/accounts';
+import { callGetUserDetails } from '@/utils/shared-server-functions';
+import React, { useEffect, useState } from 'react';
 
 const SideBar = () => {
+  const [account, setAccount] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchCampaigns = async () => {
+      const user = await callGetUserDetails();
+
+      const account: any = await getAccount(user?.id);
+      if (!account.error) {
+        setAccount(account?.data);
+      }
+    };
+    fetchCampaigns();
+  }, []);
   return (
     <aside
       id="default-sidebar"
@@ -32,30 +48,32 @@ const SideBar = () => {
               <span className="ml-3 hidden md:block">Effects</span>
             </a>
           </li>
-
-          <li>
-            <a
-              href="/account/campaigns"
-              className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-6 h-6"
+          {account?.approved && (
+            <li>
+              <a
+                href="/account/campaigns"
+                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z"
-                />
-              </svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z"
+                  />
+                </svg>
 
-              <span className="ml-3 hidden md:block ">Campaigns</span>
-            </a>
-          </li>
+                <span className="ml-3 hidden md:block ">Campaigns</span>
+              </a>
+            </li>
+          )}
+
           <li>
             <a
               href="/account/settings"

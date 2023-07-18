@@ -25,13 +25,20 @@ export async function getCampaign(campaignId: number) {
   }
 }
 
-export async function updateCampaign(campaignId: number, data: any) {
+export async function upsertCampaign(campaignId: number, data: any) {
   try {
-    return await supabase
-      .from('campaigns')
-      .update(data)
-      .eq('id', campaignId)
-      .select();
+    if (campaignId) {
+      console.log('updating');
+      return await supabase
+        .from('campaigns')
+        .update(data)
+        .eq('id', campaignId)
+        .select()
+        .single();
+    } else {
+      console.log('inserting');
+      return await supabase.from('campaigns').insert([data]).select();
+    }
   } catch (error) {
     console.error('Error:', error);
     return null;

@@ -25,15 +25,13 @@ export async function getLinkActionWithCampaignId(campaignId: number) {
   }
 }
 
-export async function upsertPromoActionWithCampaignId(
-  campaignId: number,
-  data: any
-) {
+export async function upsertPromoActionWithCampaignId(data: any) {
   try {
     return await supabase
       .from('promo_action')
       .upsert(data, { onConflict: 'campaign_id' })
-      .select();
+      .select()
+      .single();
   } catch (error) {
     console.error('Error:', error);
     return null;

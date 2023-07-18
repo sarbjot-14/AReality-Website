@@ -27,7 +27,7 @@ const Page = () => {
   }, [campaignId]);
   return (
     <div>
-      <div className="">
+      <div className="flex flex-col gap-10">
         {/* <div className="">
           <div
             onClick={handleClick}
