@@ -11,3 +11,12 @@ export async function getEffects(accountId: number) {
     return null;
   }
 }
+
+export async function getEffect(id: number) {
+  try {
+    return await supabase.from('effects').select('*').eq('id', id).single();
+  } catch (error) {
+    console.error('Error:', error);
+    return null;
+  }
+}
