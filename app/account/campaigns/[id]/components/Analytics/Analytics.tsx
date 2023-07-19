@@ -111,51 +111,48 @@ const Analytics = () => {
   }, [analytics]);
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="flex flex-col w-full md:w-5/6 max-w-4xl items-start border-2 border-gray-400 my-10 p-2 rounded-lg shadow">
-        <h1 className="text-black text-4xl font-bold ml-10 p-5">Overview</h1>
-        <div className="p-10  w-full overflow-x-auto">
-          <LineChart
-            width={730}
-            height={250}
-            data={graphData}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-          >
-            <XAxis
-              dataKey="date"
-              interval={2}
-              angle={-25}
-              height={30}
-              padding={{ right: 5 }}
-            ></XAxis>
-            <YAxis> </YAxis>
-            <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="clicks" stroke="#d95050" />
-            <Line type="monotone" dataKey="impressions" stroke="#82ca9d" />
-          </LineChart>
-        </div>
-        <dl className=" w-full flex flex-row justify-around   text-gray-900  dark:text-white sm:p-8">
-          <div className="flex flex-col items-center justify-center ">
-            <dt className="mb-2 text-3xl font-extrabold">{totalImpressions}</dt>
-            <dd className="text-gray-500 dark:text-gray-400">Impressions</dd>
-          </div>
-          <div className="flex flex-col items-center justify-center">
-            <dt className="mb-2 text-3xl font-extrabold">{totalClicks}</dt>
-            <dd className="text-gray-500 dark:text-gray-400">Clicks</dd>
-          </div>
-          <div className="flex flex-col items-center justify-center">
-            <dt className="mb-2 text-3xl font-extrabold">
-              $
-              {Math.round(
-                totalClicks * costPerClick +
-                  totalImpressions * costPerImpression
-              ) / 100}
-            </dt>
-            <dd className="text-gray-500 dark:text-gray-400">Cost</dd>
-          </div>
-        </dl>
+    <div className="flex flex-col w-full m:w-9/10 max-w-4xl items-start border-2 border-gray-400 my-10 p-2 rounded-lg shadow">
+      <h1 className="text-black text-4xl font-bold ml-10 p-5">Overview</h1>
+      <div className="p-10  w-full overflow-x-auto">
+        <LineChart
+          width={730}
+          height={250}
+          data={graphData}
+          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+        >
+          <XAxis
+            dataKey="date"
+            interval={2}
+            angle={-25}
+            height={30}
+            padding={{ right: 5 }}
+          ></XAxis>
+          <YAxis> </YAxis>
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="clicks" stroke="#d95050" />
+          <Line type="monotone" dataKey="impressions" stroke="#82ca9d" />
+        </LineChart>
       </div>
+      <dl className=" w-full flex flex-row justify-around   text-gray-900  dark:text-white sm:p-8">
+        <div className="flex flex-col items-center justify-center ">
+          <dt className="mb-2 text-3xl font-extrabold">{totalImpressions}</dt>
+          <dd className="text-gray-500 dark:text-gray-400">Impressions</dd>
+        </div>
+        <div className="flex flex-col items-center justify-center">
+          <dt className="mb-2 text-3xl font-extrabold">{totalClicks}</dt>
+          <dd className="text-gray-500 dark:text-gray-400">Clicks</dd>
+        </div>
+        <div className="flex flex-col items-center justify-center">
+          <dt className="mb-2 text-3xl font-extrabold">
+            $
+            {Math.round(
+              totalClicks * costPerClick + totalImpressions * costPerImpression
+            ) / 100}
+          </dt>
+          <dd className="text-gray-500 dark:text-gray-400">Cost</dd>
+        </div>
+      </dl>
     </div>
   );
 };
