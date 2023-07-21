@@ -17,3 +17,5 @@ supabase migration squash [flags]
 ---
 
 npx supabase gen types typescript --project-id "toufcedtucsakynmarjc" --schema public > types_db.ts
+
+sudo pnpm update
