@@ -28,7 +28,6 @@ export async function getCampaign(campaignId: number) {
 export async function upsertCampaign(campaignId: number, data: any) {
   try {
     if (campaignId) {
-      console.log('updating');
       return await supabase
         .from('campaigns')
         .update(data)
@@ -36,8 +35,7 @@ export async function upsertCampaign(campaignId: number, data: any) {
         .select()
         .single();
     } else {
-      console.log('inserting');
-      return await supabase.from('campaigns').insert([data]).select();
+      return await supabase.from('campaigns').insert([data]).select().single();
     }
   } catch (error) {
     console.error('Error:', error);

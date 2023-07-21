@@ -26,7 +26,6 @@ const upsertProductRecord = async (product: Stripe.Product) => {
 
   const { error } = await supabaseAdmin.from('products').upsert([productData]);
   if (error) throw error;
-  console.log(`Product inserted/updated: ${product.id}`);
 };
 
 const upsertPriceRecord = async (price: Stripe.Price) => {
@@ -46,7 +45,6 @@ const upsertPriceRecord = async (price: Stripe.Price) => {
 
   const { error } = await supabaseAdmin.from('prices').upsert([priceData]);
   if (error) throw error;
-  console.log(`Price inserted/updated: ${price.id}`);
 };
 
 const createOrRetrieveCustomer = async ({

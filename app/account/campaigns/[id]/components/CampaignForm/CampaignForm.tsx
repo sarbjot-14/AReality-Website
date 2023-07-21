@@ -37,7 +37,7 @@ const validationSchema = yup.object({
   title: yup.string().required('Title is required'),
   effect: yup.number().required('Effect is required')
 });
-const CampaignForm = ({ campaign }: any) => {
+const CampaignForm = ({ campaign, settingCampaign }: any) => {
   const [effects, setEffects] = useState<any>(null);
 
   const [account, setAccount] = useState<any>({});
@@ -92,7 +92,7 @@ const CampaignForm = ({ campaign }: any) => {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       // update title and effect
-      const campaignData = await upsertCampaign(campaignInfo?.id, {
+      const campaignData = await settingCampaign(campaignInfo?.id, {
         effect_id: values?.effect,
         title: values?.title,
         account_id: account?.id,
@@ -100,7 +100,7 @@ const CampaignForm = ({ campaign }: any) => {
       });
       if (campaignData?.data) {
         setOpen(true);
-        console.log('updating ', campaignData?.data);
+
         setCampaignInfo(campaignData?.data);
       }
     }

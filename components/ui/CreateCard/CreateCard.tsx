@@ -4,7 +4,7 @@ import Tooltip from '@mui/material/Tooltip';
 const CreateCard = ({ tooltipMessage }: any) => {
   return (
     <Tooltip placement="top" title={tooltipMessage}>
-      <div className="flex flex-col justify-center items-center w-32 h-32 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+      <div className="flex flex-col justify-center items-center cursor-pointer w-32 h-32 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

@@ -5,9 +5,9 @@ import CreateCard from '@/components/ui/CreateCard/CreateCard';
 import { getAccount } from '@/supabase-api/accounts';
 import { getEffects } from '@/supabase-api/effects';
 import { callGetUserDetails } from '@/utils/shared-server-functions';
+import Tooltip from '@mui/material/Tooltip';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import Tooltip from '@mui/material/Tooltip';
 
 const Effects = () => {
   const router = useRouter();
@@ -18,12 +18,14 @@ const Effects = () => {
   useEffect(() => {
     const fetchEffects = async () => {
       const user = await callGetUserDetails();
-      const account: any = await getAccount(user?.id);
-      setAccount(account?.data);
+      const accountData: any = await getAccount(user?.id);
 
-      const fetchData = await getEffects(account?.data?.id);
+      if (accountData?.data) {
+        const fetchData = await getEffects(accountData?.data?.id);
 
-      setEffects(fetchData?.data);
+        setAccount(accountData?.data);
+        setEffects(fetchData?.data);
+      }
     };
     fetchEffects();
   }, []);

@@ -112,7 +112,9 @@ const Analytics = () => {
 
   return (
     <div className="flex flex-col w-full m:w-9/10 max-w-4xl items-start border-2 border-gray-400 my-10 p-2 rounded-lg shadow">
-      <h1 className="text-black text-4xl font-bold ml-10 p-5">Overview</h1>
+      <h1 className="text-black text-4xl font-bold ml-10 p-5">
+        Analytics Overview
+      </h1>
       <div className="p-10  w-full overflow-x-auto">
         <LineChart
           width={730}

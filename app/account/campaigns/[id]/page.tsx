@@ -2,7 +2,7 @@
 
 import CallToActionForm from './components/CallToActionFrom/CallToActionForm';
 import CampaignForm from './components/CampaignForm/CampaignForm';
-import { getCampaign } from '@/supabase-api/campaigns';
+import { getCampaign, upsertCampaign } from '@/supabase-api/campaigns';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -26,12 +26,30 @@ const Page = () => {
     };
     fetchData();
   }, [campaignId]);
+  // useEffect(() => {
+
+  // }, [campaign]);
+  const settingCampaign = async (campaignId: any, updatedCampaign: any) => {
+    const campaignData = await upsertCampaign(campaignId, {
+      effect_id: updatedCampaign?.effect_id,
+      title: updatedCampaign?.title,
+      account_id: updatedCampaign?.account_id,
+      call_to_action_type: 'promo'
+    });
+    if (campaignData?.data) {
+      setCampaign(campaignData?.data);
+      return campaignData;
+    }
+  };
   return (
     <div>
       <div className="flex flex-col gap-10">
         {campaign && <Analytics></Analytics>}
 
-        <CampaignForm campaign={campaign}></CampaignForm>
+        <CampaignForm
+          campaign={campaign}
+          settingCampaign={settingCampaign}
+        ></CampaignForm>
         <CallToActionForm campaign={campaign}></CallToActionForm>
       </div>
     </div>

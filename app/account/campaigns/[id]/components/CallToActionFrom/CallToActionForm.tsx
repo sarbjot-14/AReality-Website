@@ -100,7 +100,7 @@ const CallToActionForm = ({ campaign }: any) => {
         campaign_id: campaign.id,
         prompt: values?.prompt,
         link: values?.link,
-        image_name: uploadName
+        image_name: file ? uploadName : null
       });
       console.log('updating prmo ', actionData);
       if (actionData?.data) {
@@ -115,7 +115,7 @@ const CallToActionForm = ({ campaign }: any) => {
   };
 
   return (
-    <div className={`w-full ${!campaign && 'pointer-events-none opacity-60'} `}>
+    <div className={`w-full ${!campaign && 'pointer-events-none opacity-40'} `}>
       <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
           Saved Settings
