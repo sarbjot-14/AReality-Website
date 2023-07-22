@@ -165,13 +165,29 @@ const CallToActionForm = ({ campaign }: any) => {
             {formik?.errors?.link as string}
           </p>
         </div>
-
-        <button
-          type="submit"
-          className=" w-1/2 mx-auto rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          Save
-        </button>
+        <div className="flex justify-around">
+          {' '}
+          <button
+            type="submit"
+            className="w-1/3 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+          >
+            Save
+          </button>
+          <button
+            className="w-1/3 text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              window.open(
+                `https://effect-campaign-i6ffr49xw-sarbjot-14.vercel.app/campaign=${campaign?.id}&p=true`,
+                '_blank' // <- This is what makes it open in a new window.
+              );
+            }}
+          >
+            {' '}
+            Preview Ad Campaign
+          </button>
+        </div>
       </form>
     </div>
   );
