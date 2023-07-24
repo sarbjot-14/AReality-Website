@@ -36,6 +36,7 @@ const validationSchema = yup.object({
   link: yup.string().required('Link is required')
 });
 const CallToActionForm = ({ campaign }: any) => {
+  const previewAdLink = 'https://effect-campaign.vercel.app';
   const [promoAction, setPromoAction] = useState<any>(null);
   const [file, setFile] = useState<any>(null);
   const [open, setOpen] = useState(false);
@@ -179,7 +180,7 @@ const CallToActionForm = ({ campaign }: any) => {
             onClick={(e) => {
               e.preventDefault();
               window.open(
-                `https://effect-campaign-i6ffr49xw-sarbjot-14.vercel.app/campaign=${campaign?.id}&p=true`,
+                previewAdLink + `?campaign=${campaign?.id}&p=true`,
                 '_blank' // <- This is what makes it open in a new window.
               );
             }}

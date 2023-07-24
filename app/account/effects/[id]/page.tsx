@@ -33,12 +33,15 @@ const EffectPage = () => {
   useEffect(() => {
     const getEffect = async () => {
       // get video
-      const { data } = supabase.storage
-        .from('effect-previews')
-        .getPublicUrl(effect?.preview_file);
+      if (effect?.preview_file) {
+        const { data } = supabase.storage
+          .from('effect-previews')
+          .getPublicUrl(effect?.preview_file);
 
-      setEffectPreview(data.publicUrl);
+        setEffectPreview(data.publicUrl);
+      }
     };
+
     if (effect) {
       getEffect();
     }
@@ -46,9 +49,9 @@ const EffectPage = () => {
 
   return (
     <div className="text-black flex flex-col md:flex-row justify-around items-center gap-10 ">
-      <div className="h-[90%] w-[90%] md:w-1/2 p-5 bg-gray-200 rounded-xl">
-        {' '}
-        {effectPreview && (
+      {effectPreview && (
+        <div className="h-[90%] w-[90%] md:w-1/2 p-5 bg-gray-200 rounded-xl">
+          {' '}
           <Player
             muted
             autoPlay={true}
@@ -58,9 +61,9 @@ const EffectPage = () => {
           >
             <ControlBar autoHide={true} className="opacity-0" />
           </Player>
-        )}
-      </div>
-      <div className="border-4 border-gray-400 rounded-xl p-5 flex flex-col gap-5">
+        </div>
+      )}
+      <div className="border-4 border-gray-400 rounded-xl p-5 flex flex-col gap-5 min-w-[200px]">
         <h1 className="text-xl font-bold">{effect?.name}</h1>
         <h1 className="text-gray-900">State: {effect?.state}</h1>
         <a href={effect?.public_link} target="_blank">
