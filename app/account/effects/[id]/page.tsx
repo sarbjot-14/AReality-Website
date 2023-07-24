@@ -66,14 +66,20 @@ const EffectPage = () => {
       <div className="border-4 border-gray-400 rounded-xl p-5 flex flex-col gap-5 min-w-[200px]">
         <h1 className="text-xl font-bold">{effect?.name}</h1>
         <h1 className="text-gray-900">State: {effect?.state}</h1>
-        <a href={effect?.public_link} target="_blank">
-          <button
-            type="submit"
-            className="w-1/2 mx-auto rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            View
-          </button>
-        </a>
+        <button
+          className="w-[75px] text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            window.open(
+              effect?.public_link,
+              '_blank' // <- This is what makes it open in a new window.
+            );
+          }}
+        >
+          {' '}
+          View
+        </button>
       </div>
     </div>
   );
