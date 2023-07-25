@@ -13,13 +13,15 @@ export default async function LandingPage() {
               <p className="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
                 AReality can help leverage the virality of social media and
                 create fun augmented reality filters that will foster closer
-                relationships with customer your customer base.
+                relationships with your customer base.
               </p>
               <a
-                href="/signin"
+                target="_blank"
+                aria-label="TikTok"
+                href="https://www.tiktok.com/@arealitymedia"
                 className="inline-flex items-center justify-center mb-5 px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
               >
-                Get started
+                Our Portfolio
                 <svg
                   className="w-5 h-5 ml-2 -mr-1"
                   fill="currentColor"
@@ -34,7 +36,8 @@ export default async function LandingPage() {
                 </svg>
               </a>
               <a
-                href="#"
+                target="_blank"
+                href="https://calendly.com/areality/areality-marketing-inquiry"
                 className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
               >
                 Book a meeting
