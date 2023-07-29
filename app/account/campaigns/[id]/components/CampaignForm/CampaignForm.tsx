@@ -108,7 +108,12 @@ const CampaignForm = ({ campaign, settingCampaign }: any) => {
 
   return (
     <div className="w-full">
-      <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        open={open}
+        autoHideDuration={4000}
+        onClose={handleClose}
+      >
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
           Saved Settings
         </Alert>

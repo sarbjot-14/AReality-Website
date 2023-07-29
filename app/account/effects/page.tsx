@@ -35,7 +35,10 @@ const Effects = () => {
         target="_blank"
         href="https://calendly.com/areality/areality-tiktok-effect-design"
       >
-        <CreateCard tooltipMessage="Set a meeting to design your custom TikTok Effect"></CreateCard>
+        <CreateCard
+          text="Create Effect"
+          tooltipMessage="Set a meeting to design your custom TikTok Effect"
+        ></CreateCard>
       </a>
 
       {effects?.map((effect: any) => {

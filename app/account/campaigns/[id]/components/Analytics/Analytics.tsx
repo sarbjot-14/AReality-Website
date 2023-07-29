@@ -112,7 +112,7 @@ const Analytics = () => {
 
   return (
     <div className="flex flex-col w-full m:w-9/10 max-w-4xl items-start border-2 border-gray-400 my-10 p-2 rounded-lg shadow">
-      <h1 className="text-black text-4xl font-bold ml-10 p-5">
+      <h1 className="text-black text-2xl font-bold ml-10 p-5">
         Analytics Overview
       </h1>
       <div className="p-10  w-full overflow-x-auto">
@@ -145,7 +145,7 @@ const Analytics = () => {
           <dt className="mb-2 text-3xl font-extrabold">{totalClicks}</dt>
           <dd className="text-gray-500 dark:text-gray-400">Clicks</dd>
         </div>
-        <div className="flex flex-col items-center justify-center">
+        {/* <div className="flex flex-col items-center justify-center">
           <dt className="mb-2 text-3xl font-extrabold">
             $
             {Math.round(
@@ -153,7 +153,7 @@ const Analytics = () => {
             ) / 100}
           </dt>
           <dd className="text-gray-500 dark:text-gray-400">Cost</dd>
-        </div>
+        </div> */}
       </dl>
     </div>
   );

@@ -43,6 +43,9 @@ const Page = () => {
   };
   return (
     <div>
+      {campaign && (
+        <h1 className="text-black text-3xl font-bold">{campaign.title}</h1>
+      )}
       <div className="flex flex-col gap-10">
         {campaign && <Analytics></Analytics>}
 

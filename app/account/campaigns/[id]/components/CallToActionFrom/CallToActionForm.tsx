@@ -117,7 +117,12 @@ const CallToActionForm = ({ campaign }: any) => {
 
   return (
     <div className={`w-full ${!campaign && 'pointer-events-none opacity-40'} `}>
-      <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
+      <Snackbar
+        open={open}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        autoHideDuration={4000}
+        onClose={handleClose}
+      >
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
           Saved Settings
         </Alert>
@@ -174,20 +179,22 @@ const CallToActionForm = ({ campaign }: any) => {
           >
             Save
           </button>
-          <button
-            className="w-1/3 text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              window.open(
-                previewAdLink + `?campaign=${campaign?.id}&p=true`,
-                '_blank' // <- This is what makes it open in a new window.
-              );
-            }}
-          >
-            {' '}
-            Preview Ad Campaign
-          </button>
+          {promoAction && (
+            <button
+              className="w-1/3 text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                window.open(
+                  previewAdLink + `?campaign=${campaign?.id}&t=true`,
+                  '_blank' // <- This is what makes it open in a new window.
+                );
+              }}
+            >
+              {' '}
+              Preview Ad Campaign
+            </button>
+          )}
         </div>
       </form>
     </div>

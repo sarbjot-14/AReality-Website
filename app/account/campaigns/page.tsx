@@ -43,7 +43,7 @@ const Campaigns = () => {
           router.push(`/account/campaigns/new`);
         }}
       >
-        <CreateCard></CreateCard>
+        <CreateCard text="Create Campaign"></CreateCard>
       </div>
 
       {campaigns?.map((campaign: any) => {
