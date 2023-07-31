@@ -86,6 +86,8 @@ const CampaignForm = ({ campaign, settingCampaign }: any) => {
   }, [campaignInfo]);
 
   const formik = useFormik({
+    validateOnMount: false,
+    validateOnChange: false,
     initialValues: {
       title: campaignInfo?.title || '',
       effect: campaignInfo?.effect || 0

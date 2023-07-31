@@ -81,6 +81,8 @@ const CallToActionForm = ({ campaign }: any) => {
   }, [promoAction]);
 
   const formik = useFormik({
+    validateOnMount: false,
+    validateOnChange: false,
     initialValues: {
       prompt: promoAction?.prompt || '',
       link: promoAction?.link || ''
