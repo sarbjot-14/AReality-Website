@@ -71,35 +71,9 @@ const CampaignForm = () => {
     setOpen(false);
   };
 
-  useEffect(() => {
-    const getData = async () => {
-      const userData = await callGetUserDetails();
-      setUser(userData);
-      const accountData: any = await getAccount(userData?.id);
-      setAccount(accountData?.data);
-      setLoading(false);
-    };
-    getData();
-  }, []);
-  useEffect(() => {
-    const setData = async () => {
-      if (account) {
-        formik.setFieldValue('company_name', account?.companies?.name);
-        formik.setFieldValue('industry', account?.companies?.industry);
-        formik.setFieldValue(
-          'company_website',
-          account?.companies?.company_website
-        );
-        formik.setFieldValue('full_name', account?.full_name);
-        formik.setFieldValue('title', account?.title);
-        formik.setFieldValue('email', account?.email);
-        formik.setErrors({});
-      }
-    };
-    setData();
-  }, [account]);
-
   const formik = useFormik({
+    validateOnMount: false,
+    validateOnChange: false,
     initialValues: {
       company_name: account?.name || '',
       industry: account?.industry || '',
@@ -131,6 +105,35 @@ const CampaignForm = () => {
       }
     }
   });
+
+  useEffect(() => {
+    const getData = async () => {
+      const userData = await callGetUserDetails();
+      setUser(userData);
+      const accountData: any = await getAccount(userData?.id);
+      setAccount(accountData?.data);
+      setLoading(false);
+    };
+    getData();
+  }, []);
+  useEffect(() => {
+    const setData = async () => {
+      if (account) {
+        formik.setFieldValue('company_name', account?.companies?.name);
+        formik.setFieldValue('industry', account?.companies?.industry);
+        formik.setFieldValue(
+          'company_website',
+          account?.companies?.company_website
+        );
+        formik.setFieldValue('full_name', account?.full_name);
+        formik.setFieldValue('title', account?.title);
+        formik.setFieldValue('email', account?.email);
+        formik.setErrors({});
+        formik.setStatus({});
+      }
+    };
+    setData();
+  }, [account]);
 
   return (
     <div>
