@@ -79,6 +79,7 @@ const CampaignForm = ({ campaign, settingCampaign }: any) => {
       if (campaignInfo?.id) {
         formik.setFieldValue('title', campaignInfo.title);
         formik.setFieldValue('effect', campaignInfo?.effect_id);
+        formik.setErrors({});
       }
     };
     fetchAccountData();

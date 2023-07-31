@@ -74,6 +74,7 @@ const CallToActionForm = ({ campaign }: any) => {
         formik.setFieldValue('prompt', promoAction?.prompt);
 
         formik.setFieldValue('link', promoAction?.link);
+        formik.setErrors({});
       }
     };
     fetchAccountData();

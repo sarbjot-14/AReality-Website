@@ -93,6 +93,7 @@ const CampaignForm = () => {
         formik.setFieldValue('full_name', account?.full_name);
         formik.setFieldValue('title', account?.title);
         formik.setFieldValue('email', account?.email);
+        formik.setErrors({});
       }
     };
     setData();
