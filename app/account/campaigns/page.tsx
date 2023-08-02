@@ -7,9 +7,11 @@ import { getCampaigns } from '@/supabase-api/campaigns';
 import { callGetUserDetails } from '@/utils/shared-server-functions';
 import { redirect, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import Loading from '@/components/ui/Loading/Loading';
 
 const Campaigns = () => {
   const [campaigns, setCampaigns] = useState<any>(null);
+  const [loading, setLoading] = useState<any>(true);
   const router = useRouter();
   useEffect(() => {
     const protectPath = async () => {
@@ -33,10 +35,13 @@ const Campaigns = () => {
       const fetchData = await getCampaigns(account?.data?.id);
 
       setCampaigns(fetchData?.data);
+      setLoading(false);
     };
     fetchCampaigns();
   }, []);
-  return (
+  return loading ? (
+    <Loading></Loading>
+  ) : (
     <div className="text-black text-lgf flex flex-wrap gap-5">
       <div
         onClick={() => {
