@@ -17,33 +17,6 @@ export default async function Navbar() {
   } = await supabase.auth.getUser();
   const userInfoData = await getUser(user?.id!);
 
-  // const userDetail = await callGetUserDetails();
-  // console.log('auth user is ', user);
-  // console.log('user detail is ', userDetail);
-
-  // useEffect(() => {
-  //   const protectPath = async () => {
-  //     console.log('auth user is ', user);
-  //     const userDetail = await callGetUserDetails();
-  //     console.log('user detail is ', userDetail);
-  //     if (!user) {
-  //       router.push('/influencer-portal/signin');
-  //     } else {
-  //       const userInfoData = await getUser(user?.id);
-  //       if (userInfoData?.data?.role == null) {
-  //         const response = await putUser(user?.id, {
-  //           ...userInfoData?.data,
-  //           role: 'Influencer'
-  //         });
-  //       } else if (userInfoData?.data?.role == 'Company') {
-  //         router.push('/signin');
-  //       }
-  //     }
-  //     //console.log('user is ', user);
-  //   };
-  //   protectPath();
-  // }, []);
-
   return (
     <nav className={s.root}>
       <a href="#skip" className="sr-only focus:not-sr-only">
