@@ -1,22 +1,23 @@
 import { supabase } from './index';
 
-export async function getUser(userId: number) {
+export async function getUser(userId: string) {
+  console.log('user is id ', userId);
   try {
-    return await supabase.from('users').select('*').single();
+    return await supabase.from('users').select('*').eq('id', userId).single();
   } catch (error) {
     console.error('Error:', error);
     return null;
   }
 }
 
-export type putUserParam = { full_name: string };
-export async function putUser(userId: number, payLoad: putUserParam) {
+export async function putUser(userId: string, payLoad: any) {
   try {
     return await supabase
       .from('users')
       .update(payLoad)
       .eq('id', userId)
-      .select();
+      .select('*')
+      .single();
   } catch (error) {
     console.error('Error:', error);
     return null;

@@ -8,6 +8,7 @@ import { callGetUserDetails } from '@/utils/shared-server-functions';
 import { redirect, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import Loading from '@/components/ui/Loading/Loading';
+import { getUser, putUser } from '@/supabase-api/users';
 
 const Campaigns = () => {
   const [campaigns, setCampaigns] = useState<any>(null);
@@ -18,6 +19,16 @@ const Campaigns = () => {
       const user = await callGetUserDetails();
       if (!user) {
         router.push('/signin');
+      } else {
+        const userInfoData = await getUser(user?.id);
+        if (userInfoData?.data?.role == null) {
+          const response = await putUser(user?.id, {
+            ...userInfoData?.data,
+            role: 'Company'
+          });
+        } else if (userInfoData?.data?.role == 'Influencer') {
+          router.push('/influencer-portal/signin');
+        }
       }
     };
     protectPath();

@@ -74,7 +74,7 @@ const createOrRetrieveCustomer = async ({
       .from('customers')
       .insert([{ id: uuid, stripe_customer_id: customer.id }]);
     if (supabaseError) throw supabaseError;
-    console.log(`New customer created and inserted for ${uuid}.`);
+
     return customer.id;
   }
   return data.stripe_customer_id;
