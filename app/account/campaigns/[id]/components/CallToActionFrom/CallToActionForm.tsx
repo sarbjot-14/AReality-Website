@@ -106,7 +106,7 @@ const CallToActionForm = ({ campaign }: any) => {
         link: values?.link,
         image_name: file ? uploadName : null
       });
-      console.log('updating prmo ', actionData);
+
       if (actionData?.data) {
         setOpen(true);
         setPromoAction(actionData?.data);

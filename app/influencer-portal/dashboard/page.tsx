@@ -28,7 +28,7 @@ const Dashboard = () => {
     };
     protectPath();
   }, []);
-  getUser;
+  // getUser;
 
   return <div className="text-black">Dashboard</div>;
 };

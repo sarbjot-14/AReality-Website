@@ -46,7 +46,9 @@ const Campaigns = () => {
       const fetchData = await getCampaigns(account?.data?.id);
 
       setCampaigns(fetchData?.data);
-      setLoading(false);
+      if (fetchData?.data) {
+        setLoading(false);
+      }
     };
     fetchCampaigns();
   }, []);
