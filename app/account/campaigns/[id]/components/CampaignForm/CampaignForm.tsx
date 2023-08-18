@@ -98,8 +98,7 @@ const CampaignForm = ({ campaign, settingCampaign }: any) => {
       const campaignData = await settingCampaign(campaignInfo?.id, {
         effect_id: values?.effect,
         title: values?.title,
-        account_id: account?.id,
-        call_to_action_type: 'promo'
+        account_id: account?.id
       });
       if (campaignData?.data) {
         setOpen(true);

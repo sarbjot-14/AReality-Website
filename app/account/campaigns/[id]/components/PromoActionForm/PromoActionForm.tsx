@@ -2,9 +2,7 @@
 
 import Card from '@/components/ui/Card/Card';
 import {
-  getLinkActionWithCampaignId,
   getPromoActionWithCampaignId,
-  updateLinkActionWithCampaignId,
   upsertPromoActionWithCampaignId
 } from '@/supabase-api/callToAction';
 import { Button, TextField, Select, MenuItem, InputLabel } from '@mui/material';
@@ -35,7 +33,7 @@ const validationSchema = yup.object({
 
   link: yup.string().required('Link is required')
 });
-const CallToActionForm = ({ campaign }: any) => {
+const PromoActionForm = ({ campaign, settingCampaign }: any) => {
   const previewAdLink = 'https://effect-campaign.vercel.app';
   const [promoAction, setPromoAction] = useState<any>(null);
   const [file, setFile] = useState<any>(null);
@@ -101,6 +99,7 @@ const CallToActionForm = ({ campaign }: any) => {
       }
 
       const actionData = await upsertPromoActionWithCampaignId({
+        ...promoAction,
         campaign_id: campaign.id,
         prompt: values?.prompt,
         link: values?.link,
@@ -108,6 +107,10 @@ const CallToActionForm = ({ campaign }: any) => {
       });
 
       if (actionData?.data) {
+        settingCampaign(campaign?.id, {
+          ...campaign,
+          call_to_action_type: 'promo'
+        });
         setOpen(true);
         setPromoAction(actionData?.data);
       }
@@ -119,7 +122,7 @@ const CallToActionForm = ({ campaign }: any) => {
   };
 
   return (
-    <div className={`w-full ${!campaign && 'pointer-events-none opacity-40'} `}>
+    <form className="flex flex-col gap-5 mt-5" onSubmit={formik?.handleSubmit}>
       <Snackbar
         open={open}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
@@ -130,78 +133,67 @@ const CallToActionForm = ({ campaign }: any) => {
           Saved Settings
         </Alert>
       </Snackbar>
-      <h1 className="text-3xl text-black font-medium">
-        2. Configure Call To Action
-      </h1>
+      <div>
+        <InputLabel className="mb-4">Prompt:</InputLabel>
+        <TextField
+          fullWidth
+          id="prompt"
+          name="prompt"
+          label="Prompt"
+          value={formik?.values.prompt}
+          onChange={formik?.handleChange}
+          error={formik?.touched.prompt && Boolean(formik?.errors.prompt)}
+        />
+        <p className="text-red-500 text-sm">
+          {formik?.errors?.prompt as string}
+        </p>
+      </div>
 
-      <form
-        className=" border-2 border-zinc-300 rounded-xl p-5 flex flex-col gap-10"
-        onSubmit={formik?.handleSubmit}
-      >
-        <div>
-          <InputLabel className="mb-4">Prompt:</InputLabel>
-          <TextField
-            fullWidth
-            id="prompt"
-            name="prompt"
-            label="Prompt"
-            value={formik?.values.prompt}
-            onChange={formik?.handleChange}
-            error={formik?.touched.prompt && Boolean(formik?.errors.prompt)}
-          />
-          <p className="text-red-500 text-sm">
-            {formik?.errors?.prompt as string}
-          </p>
-        </div>
-
-        <div>
-          <InputLabel className="mb-4">Promo Image:</InputLabel>
-          <input type="file" onChange={onFileChange} />
-          <p className="text-black">File Name: {file?.name}</p>
-        </div>
-        <div>
-          <InputLabel className="mb-4">Link:</InputLabel>
-          <TextField
-            fullWidth
-            id="link"
-            name="link"
-            label="link"
-            value={formik?.values.link}
-            onChange={formik?.handleChange}
-            error={formik?.touched.link && Boolean(formik?.errors.link)}
-          />
-          <p className="text-red-500 text-sm">
-            {formik?.errors?.link as string}
-          </p>
-        </div>
-        <div className="flex justify-around">
-          {' '}
+      <div>
+        <InputLabel className="mb-4">Promo Image:</InputLabel>
+        <input type="file" onChange={onFileChange} />
+        <p className="text-black">File Name: {file?.name}</p>
+      </div>
+      <div>
+        <InputLabel className="mb-4">Link:</InputLabel>
+        <TextField
+          fullWidth
+          id="link"
+          name="link"
+          label="link"
+          value={formik?.values.link}
+          onChange={formik?.handleChange}
+          error={formik?.touched.link && Boolean(formik?.errors.link)}
+        />
+        <p className="text-red-500 text-sm">{formik?.errors?.link as string}</p>
+      </div>
+      <div className="flex justify-around p-5">
+        {' '}
+        <button
+          type="submit"
+          className="w-1/3 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+        >
+          Save
+        </button>
+        {promoAction && (
           <button
-            type="submit"
-            className="w-1/3 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+            className="w-1/3 text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              window.open(
+                previewAdLink + `?campaign=${campaign?.id}&t=true`,
+                '_blank' // <- This is what makes it open in a new window.
+              );
+            }}
           >
-            Save
+            {' '}
+            Preview Ad Campaign
           </button>
-          {promoAction && (
-            <button
-              className="w-1/3 text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                window.open(
-                  previewAdLink + `?campaign=${campaign?.id}&t=true`,
-                  '_blank' // <- This is what makes it open in a new window.
-                );
-              }}
-            >
-              {' '}
-              Preview Ad Campaign
-            </button>
-          )}
-        </div>
-      </form>
-    </div>
+        )}
+      </div>
+    </form>
   );
 };
 
-export default CallToActionForm;
+export default PromoActionForm;

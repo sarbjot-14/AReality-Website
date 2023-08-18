@@ -12,10 +12,10 @@ export async function getPromoActionWithCampaignId(campaignId: number) {
     return null;
   }
 }
-export async function getLinkActionWithCampaignId(campaignId: number) {
+export async function getDownloadActionWithCampaignId(campaignId: number) {
   try {
     return supabase
-      .from('link_action')
+      .from('download_action')
       .select('*')
       .eq('campaign_id', campaignId)
       .single();
@@ -29,7 +29,7 @@ export async function upsertPromoActionWithCampaignId(data: any) {
   try {
     return await supabase
       .from('promo_action')
-      .upsert(data, { onConflict: 'campaign_id' })
+      .upsert(data, { onConflict: 'id' })
       .select()
       .single();
   } catch (error) {
@@ -37,18 +37,37 @@ export async function upsertPromoActionWithCampaignId(data: any) {
     return null;
   }
 }
-export async function updateLinkActionWithCampaignId(
-  campaignId: number,
-  data: any
-) {
+
+export async function upsertDownloadActionWithCampaignId(data: any) {
   try {
     return await supabase
-      .from('link_action')
-      .update(data)
-      .eq('id', campaignId)
-      .select();
+      .from('download_action')
+      .upsert(data, { onConflict: 'id' })
+
+      .select()
+      .single();
   } catch (error) {
     console.error('Error:', error);
     return null;
   }
 }
+// export async function upsertDownloadActionWithCampaignId(
+//   campaignId: number,
+//   data: any
+// ) {
+//   try {
+//     if (campaignId) {
+//       return await supabase
+//         .from('download_action')
+//         .upsert(data, { onConflict: 'id' })
+//         .eq('id', campaignId)
+//         .select()
+//         .single();
+//     } else {
+//       return await supabase.from('campaigns').insert([data]).select().single();
+//     }
+//   } catch (error) {
+//     console.error('Error:', error);
+//     return null;
+//   }
+// }
