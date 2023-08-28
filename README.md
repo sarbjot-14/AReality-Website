@@ -1,4 +1,4 @@
-# AReality Wesbite
+# AReality Website
 
 The all-in-one starter kit for high-performance SaaS applications.
 
